@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-  static const backgroundColor = Color.fromARGB(255, 50, 39, 80);
+  static const backgroundColor = Colors.blue;
   static final mainTheme = ThemeData(
 
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -9,19 +9,17 @@ class Constants {
         surfaceTintColor: MaterialStateProperty.resolveWith<Color>((states) {
           return Colors.transparent;
         }),
-        backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-          return Colors.grey;
-        }),
-      )
-    ),
+        backgroundColor: MaterialStateProperty.all(Colors.orange)
+        ), 
+      ),
 
     textTheme: const TextTheme(
       headlineLarge: TextStyle(
-        color: Colors.blue,
+        color: Colors.orange,
         fontSize: 42,
       ),
       headlineMedium: TextStyle(
-        color: Colors.amber,
+        color: Colors.blue,
         fontSize: 36
       )
     ),
