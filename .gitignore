@@ -10,6 +10,8 @@
 .svn/
 migrate_working_dir/
 
+.lock
+
 /windows/
 
 # IntelliJ related
