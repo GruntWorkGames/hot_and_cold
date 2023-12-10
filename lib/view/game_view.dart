@@ -12,6 +12,12 @@ class GameView extends ConsumerWidget {
     final game = GameComponent();
     final gameWidget = GameWidget(game: game);
     final stack = Stack(children: [gameWidget, Gui()]);
-    return Scaffold(body: stack);
+    return Scaffold(
+      body: stack, 
+      appBar: AppBar(
+        backgroundColor: Colors.deepOrange.withOpacity(0.4),
+      ), 
+      extendBodyBehindAppBar: true,
+    );
   }
 }

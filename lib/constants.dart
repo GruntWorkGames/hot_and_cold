@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Constants {
+  static const color1 = Colors.deepOrange;
+  static const color2 = Colors.blue;
   static const backgroundColor = Colors.blue;
   static final mainTheme = ThemeData(
 
@@ -9,17 +11,17 @@ class Constants {
         surfaceTintColor: MaterialStateProperty.resolveWith<Color>((states) {
           return Colors.transparent;
         }),
-        backgroundColor: MaterialStateProperty.all(Colors.orange)
+        backgroundColor: MaterialStateProperty.all(color1)
         ), 
       ),
 
     textTheme: const TextTheme(
       headlineLarge: TextStyle(
-        color: Colors.orange,
+        color: color1,
         fontSize: 42,
       ),
       headlineMedium: TextStyle(
-        color: Colors.blue,
+        color: color1,
         fontSize: 36
       )
     ),
