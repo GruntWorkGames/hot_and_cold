@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
-import 'package:flame/sprite.dart';
 import 'package:hot_and_cold/components/sprite.dart';
 import 'package:hot_and_cold/constants.dart';
 import 'package:hot_and_cold/enum/direction.dart';
@@ -12,14 +10,11 @@ import 'package:hot_and_cold/model/tile.dart';
 class Player extends SpriteAnim {
   bool isMoving = false;
   bool isWalkPressed = false;
-  final Map<PlayerAnimState, SpriteAnimation> animations = {};
-  PlayerAnimState animationState = PlayerAnimState.idleDown;
-  TilePos tile = TilePos.empty();
 
   @override
   FutureOr<void> onLoad() async {
     await buildAnimations();
-    anchor = const Anchor(0, 0.3);
+    anchor = const Anchor(0, 0.6);
   }
 
   void setAnimState(PlayerAnimState state) {
@@ -38,19 +33,19 @@ class Player extends SpriteAnim {
         playAnimFor(direction: Direction.left, state: state);
         break;
       case PlayerAnimState.walkDown:
-        playAnimFor(direction: Direction.down, state: state);
+        //playAnimFor(direction: Direction.down, state: state);
         move(Direction.down);
         break;
       case PlayerAnimState.walkUp:
-        playAnimFor(direction: Direction.up, state: state);
+        //playAnimFor(direction: Direction.up, state: state);
         move(Direction.up);
         break;
       case PlayerAnimState.walkRight:
-        playAnimFor(direction: Direction.right, state: state);
+        //playAnimFor(direction: Direction.right, state: state);
         move(Direction.right);
         break;
       case PlayerAnimState.walkLeft:
-        playAnimFor(direction: Direction.left, state: state);
+       // playAnimFor(direction: Direction.left, state: state);
         move(Direction.left);
         break;
       case PlayerAnimState.beginIdle:
@@ -136,6 +131,7 @@ class Player extends SpriteAnim {
     return distance;
   }
 
+  @override
   Future<void> buildAnimations() async {
     final json = await game.assets.readJson('json/penguin_anim.json');
     final imageFile = json['imageFile'] ?? '';
@@ -149,25 +145,42 @@ class Player extends SpriteAnim {
     animation = animations[PlayerAnimState.idleDown];
   }
 
-  SpriteAnimation animationFromJson(Image image, Map<String, dynamic> json, String animName) {
-    final spriteSheet = SpriteSheet(image: image, srcSize: Vector2(Constants.tilesize, Constants.tilesize));
-    final Map<String, dynamic> anim = json[animName];
-    final List<SpriteAnimationFrameData> frames = [];
-    final double stepTime = anim['timePerFrame'] ?? 0;
-    if (anim.containsKey('frames')) {
-      final List<dynamic> frameData = anim['frames'];
-      for (final frame in frameData) {
-        final x = frame['y'] ?? 0;
-        final y = frame['x'] ?? 0;
-        final f = spriteSheet.createFrameData(x, y, stepTime: stepTime);
-        frames.add(f);
-      }
-    }
+  void jumpToTile(TilePos tile) {
+    final dif = tile.vector - position;
+    final move = MoveEffect.by(
+      dif,
+      EffectController(duration: 0.4),
+      onComplete: () {
+        isMoving = false;
+        actionFinished(PlayerAnimState.beginIdle);
+      },
+    );
+    move.removeOnFinish = true;
+    isMoving = true;
 
-    return SpriteAnimation.fromFrameData(image, SpriteAnimationData(frames));
+    final zoomIn = ScaleEffect.to(Vector2(1.25, 1.25), EffectController(duration: .15));
+    final zoomOut = ScaleEffect.to(Vector2(1.0, 1.0), EffectController(duration: .15));
+    final sequence = SequenceEffect([zoomIn, zoomOut]);
+    add(sequence);
+    add(move);
   }
 
-  void jumpToTile(TilePos tile) {
-    
+  void faceDirection(Direction dir) {
+     switch(dir) {
+      case Direction.right:
+        playAnimFor(direction: Direction.down, state: PlayerAnimState.idleRight);
+        break;
+      case Direction.left:
+        playAnimFor(direction: Direction.up, state: PlayerAnimState.idleLeft);
+        break;
+      case Direction.down:
+        playAnimFor(direction: Direction.right, state: PlayerAnimState.idleDown);
+        break;
+      case Direction.up:
+        playAnimFor(direction: Direction.left, state: PlayerAnimState.idleUp);
+        break;
+      case Direction.none:
+
+     }
   }
 }

@@ -1,0 +1,11 @@
+{
+    "imageFile": "tiles.png",
+    "animate": {
+        "timePerFrame": 0.4,
+        "frames": [
+            {"x":1,"y":10},
+            {"x":2,"y":10},
+            {"x":3,"y":10}
+        ]
+    }
+}
