@@ -1,31 +1,59 @@
 {
     "imageFile": "tiles.png",
-    "idleDown": {
+    "walkUp": {
         "timePerFrame": 0.4,
         "frames": [
-            {"x":0,"y":0},
-            {"x":0,"y":0}
+            {"x":0,"y":2},
+            {"x":1,"y":2}
+        ]
+    },    
+    "walkDown": {
+        "timePerFrame": 0.4,
+        "frames": [
+            {"x":0,"y":3},
+            {"x":1,"y":3}
         ]
     },
-    "idleUp": {
+    "walkLeft": {
         "timePerFrame": 0.4,
         "frames": [
             {"x":0,"y":1},
             {"x":1,"y":1}
         ]
     },
-    "idleLeft": {
+    "walkRight": {
+        "timePerFrame": 0.4,
+        "frames": [
+            {"x":0,"y":0},
+            {"x":1,"y":0}
+        ]
+    },
+    "idleDown": {
+        "timePerFrame": 0.4,
+        "frames": [
+            {"x":0,"y":3},
+            {"x":1,"y":3}
+        ]
+    },
+    "idleUp": {
         "timePerFrame": 0.4,
         "frames": [
             {"x":0,"y":2},
             {"x":1,"y":2}
         ]
     },
+    "idleLeft": {
+        "timePerFrame": 0.4,
+        "frames": [
+            {"x":0,"y":1},
+            {"x":1,"y":1}
+        ]
+    },
     "idleRight": {
         "timePerFrame": 0.4,
         "frames": [
-            {"x":0,"y":3},
-            {"x":1,"y":3}
+            {"x":0,"y":0},
+            {"x":1,"y":0}
         ]
     }
 }

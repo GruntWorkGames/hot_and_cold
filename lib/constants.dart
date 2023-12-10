@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class Constants {
+  static const tilesize = 64.0;
+
   static const color1 = Colors.deepOrange;
   static const color2 = Colors.blue;
   static const backgroundColor = Colors.blue;
-  static final mainTheme = ThemeData(
 
+  static final mainTheme = ThemeData(
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         surfaceTintColor: MaterialStateProperty.resolveWith<Color>((states) {
