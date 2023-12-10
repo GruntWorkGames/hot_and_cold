@@ -3,21 +3,23 @@ import 'package:hot_and_cold/constants.dart';
 import 'package:hot_and_cold/enum/direction.dart';
 import 'package:hot_and_cold/enum/tile_type.dart';
 
-class Tile {
+class TilePos {
   Vector2 vector = Vector2.zero();
   int x = 0;
   int y = 0;
   TileType type = TileType.none;
 
-  Tile.empty();
+  TilePos.empty();
   
-  Tile(this.x, this.y) {
+  TilePos(this.x, this.y) {
     vector = Vector2(x*Constants.tilesize, y*Constants.tilesize);
   }
   
-  Tile.fromVector(this.vector) {
+  TilePos.fromVector(this.vector) {
     x = vector.x ~/ Constants.tilesize;
     y = vector.y ~/ Constants.tilesize;
+    vector.x = x * Constants.tilesize;
+    vector.y = y * Constants.tilesize;
   }
 
   void set(int x, int y) {
@@ -32,18 +34,18 @@ class Tile {
     y = vector.y ~/ Constants.tilesize;
   }
 
-  static Tile getNextTile(Direction direction, Tile tile) {
+  static TilePos getNextTile(Direction direction, TilePos tile) {
     switch(direction) {
       case Direction.up:
-        return Tile(tile.x, tile.y-1);
+        return TilePos(tile.x, tile.y-1);
       case Direction.down:
-        return Tile(tile.x, tile.y+1);
+        return TilePos(tile.x, tile.y+1);
       case Direction.left:
-        return Tile(tile.x-1, tile.y);
+        return TilePos(tile.x-1, tile.y);
       case Direction.right:
-        return Tile(tile.x+1, tile.y);
+        return TilePos(tile.x+1, tile.y);
       case Direction.none:
-        return Tile(0, 0);
+        return TilePos(0, 0);
     }
   }
 }

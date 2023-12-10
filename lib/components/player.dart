@@ -1,70 +1,55 @@
-
 import 'dart:async';
 import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/sprite.dart';
+import 'package:hot_and_cold/components/sprite.dart';
 import 'package:hot_and_cold/constants.dart';
 import 'package:hot_and_cold/enum/direction.dart';
 import 'package:hot_and_cold/enum/player_anim_state.dart';
 import 'package:hot_and_cold/model/tile.dart';
 
-class Player extends SpriteAnimationComponent with HasGameRef {
+class Player extends SpriteAnim {
   bool isMoving = false;
+  bool isWalkPressed = false;
   final Map<PlayerAnimState, SpriteAnimation> animations = {};
   PlayerAnimState animationState = PlayerAnimState.idleDown;
-  Tile tile = Tile.empty();
+  TilePos tile = TilePos.empty();
 
   @override
   FutureOr<void> onLoad() async {
     await buildAnimations();
-    anchor = const Anchor(0, 0.5);
+    anchor = const Anchor(0, 0.3);
   }
 
   void setAnimState(PlayerAnimState state) {
     animationState = state;
     switch(state) {
       case PlayerAnimState.idleDown:
-        isMoving = false;
         playAnimFor(direction: Direction.down, state: state);
         break;
       case PlayerAnimState.idleUp:
-        isMoving = false;
         playAnimFor(direction: Direction.up, state: state);
         break;
       case PlayerAnimState.idleRight:
-        isMoving = false;
         playAnimFor(direction: Direction.right, state: state);
         break;
       case PlayerAnimState.idleLeft:
-        isMoving = false;
         playAnimFor(direction: Direction.left, state: state);
         break;
       case PlayerAnimState.walkDown:
-        if(isMoving) {
-          break;
-        }
-        isMoving = true;
         playAnimFor(direction: Direction.down, state: state);
         move(Direction.down);
         break;
       case PlayerAnimState.walkUp:
-        if(isMoving) {
-          break;
-        }
-        isMoving = true;
         playAnimFor(direction: Direction.up, state: state);
         move(Direction.up);
         break;
       case PlayerAnimState.walkRight:
-        print('set anim state');
-        isMoving = true;
         playAnimFor(direction: Direction.right, state: state);
         move(Direction.right);
         break;
       case PlayerAnimState.walkLeft:
-        print('set anim state');
-        isMoving = true;
         playAnimFor(direction: Direction.left, state: state);
         move(Direction.left);
         break;
@@ -87,24 +72,23 @@ class Player extends SpriteAnimationComponent with HasGameRef {
       onComplete: () {
         // snap to grid. issue with moveTo/moveBy not being perfect...
         position = lastPos + distance;
+        isMoving = false;
         // final tilePos = Tile.fromVector(position);
         actionFinished(PlayerAnimState.beginIdle);
         // onMoveCompleted(tilePos);
       },
     );
     move.removeOnFinish = true;
+    isMoving = true;
 
     add(move);
   }
 
   void actionFinished(PlayerAnimState st) {
     if (st == PlayerAnimState.beginIdle) {
-      if(isMoving) {
-        print('is moving');
+
+      if(isWalkPressed) {
         setAnimState(animationState);
-        return;
-      } else {
-        print('isNotMoving');
       }
 
       switch (animationState) {
