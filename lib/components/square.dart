@@ -19,3 +19,20 @@ class Square extends PositionComponent {
     palette.paint()..style = PaintingStyle.stroke..strokeWidth = 3);
   }
 }
+
+class DebugRect extends PositionComponent {
+  PaletteEntry palette;
+  Rect rect;
+  DebugRect(this.palette, this.rect);
+  
+  @override
+  FutureOr<void> onLoad() {
+    anchor = Anchor.center;
+  }
+
+  @override
+  void render(Canvas canvas) {
+    canvas.drawRect(rect, 
+    palette.paint()..style = PaintingStyle.stroke..strokeWidth = 3);
+  }
+}

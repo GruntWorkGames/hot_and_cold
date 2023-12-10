@@ -166,4 +166,8 @@ class Player extends SpriteAnim {
 
     return SpriteAnimation.fromFrameData(image, SpriteAnimationData(frames));
   }
+
+  void jumpToTile(TilePos tile) {
+    
+  }
 }

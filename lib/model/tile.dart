@@ -48,10 +48,8 @@ class TilePos {
         return TilePos(0, 0);
     }
   }
-}
 
-// extension on Vector2 {
-//   Vector vectorFromTile(Tile tile) {
-//     return Vector2(tile.x * Constants.tilesize, tile.y * Constants.tilesize);
-//   }
-// }
+  Vector2 toVector2() {
+    return Vector2(x.toDouble(), y.toDouble());
+  }
+}

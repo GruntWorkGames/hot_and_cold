@@ -15,7 +15,6 @@ class GameView extends ConsumerWidget {
     return Scaffold(
       body: stack, 
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange.withOpacity(0.4),
       ), 
     );
   }
