@@ -1,5 +1,3 @@
-
-
 import 'dart:async' as asyn;
 import 'dart:math';
 import 'package:flame/components.dart';
@@ -8,6 +6,7 @@ import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/palette.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/services.dart';
 import 'package:hot_and_cold/components/ice_cube.dart';
@@ -31,6 +30,7 @@ class MainComponent extends FlameGame
   final List<TilePos> rocks = [];
   final List<IceCube> iceCubes = [];
   final square = my.Square(BasicPalette.green);
+  final audio = AudioPlayer();
 
   @override 
   asyn.FutureOr<void> onLoad() async {
@@ -41,6 +41,14 @@ class MainComponent extends FlameGame
     _addKeyboardListeners();
     _createIceCubeTimer();
     world.add(square);
+    
+    audio.setVolume(0.1);
+    audio.play(AssetSource('music/Sanctuary.wav'));
+  }
+
+  @override
+  void onDispose() {
+    audio.stop();
   }
 
   void _addPlayer() {
@@ -76,49 +84,49 @@ class MainComponent extends FlameGame
     aDown(Set<LogicalKeyboardKey> keysPressed) { 
       player.isWalkPressed = true;
       if(!player.isMoving) {
-        player.setAnimState(PlayerAnimState.walkLeft);
+        player.setAnimState(PlayerAnimState.walkLeft, (){});
       }
       return true; 
     }
     aUp(Set<LogicalKeyboardKey> keysPressed) {
       player.isWalkPressed = false;
-      player.setAnimState(PlayerAnimState.idleLeft);
+      player.setAnimState(PlayerAnimState.idleLeft, (){});
       return true; 
     }
     wDown(Set<LogicalKeyboardKey> keysPressed) {
       player.isWalkPressed = true;
       if(!player.isMoving) {
-        player.setAnimState(PlayerAnimState.walkUp);
+        player.setAnimState(PlayerAnimState.walkUp, (){});
       }
       return true; 
     }
     wUp(Set<LogicalKeyboardKey> keysPressed) {
       player.isWalkPressed = false;
-      player.setAnimState(PlayerAnimState.idleUp);
+      player.setAnimState(PlayerAnimState.idleUp, (){});
       return true;
     }
     sDown(Set<LogicalKeyboardKey> keysPressed) {
       player.isWalkPressed = true;
       if(!player.isMoving) {
-        player.setAnimState(PlayerAnimState.walkDown);
+        player.setAnimState(PlayerAnimState.walkDown, (){});
       }
       return true; 
     }
     sUp(Set<LogicalKeyboardKey> keysPressed) { 
       player.isWalkPressed = false;
-      player.setAnimState(PlayerAnimState.idleDown);
+      player.setAnimState(PlayerAnimState.idleDown, (){});
       return true; 
     }
     dDown(Set<LogicalKeyboardKey> keysPressed) {
       player.isWalkPressed = true;
       if(!player.isMoving) {
-        player.setAnimState(PlayerAnimState.walkRight);
+        player.setAnimState(PlayerAnimState.walkRight, (){});
       }
       return true; 
     }
     dUp(Set<LogicalKeyboardKey> keysPressed) {
       player.isWalkPressed = false;
-      player.setAnimState(PlayerAnimState.idleRight);
+      player.setAnimState(PlayerAnimState.idleRight, (){});
       return true;
     }
 
@@ -214,6 +222,9 @@ class MainComponent extends FlameGame
     final cube = IceCube(5);
     cube.removeFunc = (){
       iceCubes.remove(cube); 
+      if(player.position == cube.position) {
+        player.removeFromParent();
+      }
     };
     cube.position = pos.vector;
     cube.tile = pos;

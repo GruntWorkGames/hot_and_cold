@@ -17,7 +17,7 @@ class Player extends SpriteAnim {
     anchor = const Anchor(0, 0.6);
   }
 
-  void setAnimState(PlayerAnimState state) {
+  void setAnimState(PlayerAnimState state, Function onComplete) {
     animationState = state;
     switch(state) {
       case PlayerAnimState.idleDown:
@@ -33,20 +33,16 @@ class Player extends SpriteAnim {
         playAnimFor(direction: Direction.left, state: state);
         break;
       case PlayerAnimState.walkDown:
-        //playAnimFor(direction: Direction.down, state: state);
-        move(Direction.down);
+        move(Direction.down, onComplete);
         break;
       case PlayerAnimState.walkUp:
-        //playAnimFor(direction: Direction.up, state: state);
-        move(Direction.up);
+        move(Direction.up, onComplete);
         break;
       case PlayerAnimState.walkRight:
-        //playAnimFor(direction: Direction.right, state: state);
-        move(Direction.right);
+        move(Direction.right, onComplete);
         break;
       case PlayerAnimState.walkLeft:
-       // playAnimFor(direction: Direction.left, state: state);
-        move(Direction.left);
+        move(Direction.left, onComplete);
         break;
       case PlayerAnimState.beginIdle:
         playAnimFor(direction: Direction.down, state: PlayerAnimState.idleDown);
@@ -58,19 +54,18 @@ class Player extends SpriteAnim {
     animation = animations[state];
   }
 
-  void move(Direction direction) {
+  void move(Direction direction, Function onMoveComplete) {
     final distance = getDistanceForMove(direction);
     final lastPos = position.clone();
     final move = MoveEffect.by(
       distance,
       EffectController(duration: 0.2),
       onComplete: () {
-        // snap to grid. issue with moveTo/moveBy not being perfect...
+        // snap to grid.
         position = lastPos + distance;
         isMoving = false;
-        // final tilePos = Tile.fromVector(position);
         actionFinished(PlayerAnimState.beginIdle);
-        // onMoveCompleted(tilePos);
+        onMoveComplete();
       },
     );
     move.removeOnFinish = true;
@@ -83,7 +78,7 @@ class Player extends SpriteAnim {
     if (st == PlayerAnimState.beginIdle) {
 
       if(isWalkPressed) {
-        setAnimState(animationState);
+        setAnimState(animationState, (){});
       }
 
       switch (animationState) {

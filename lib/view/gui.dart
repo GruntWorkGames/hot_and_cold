@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Gui extends ConsumerWidget {
+class Gui extends StatelessWidget {
   const Gui({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Container();
   }
   
